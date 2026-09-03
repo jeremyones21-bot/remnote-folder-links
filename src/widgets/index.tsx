@@ -23,18 +23,19 @@ async function onActivate(plugin: ReactRNPlugin) {
     widgetTabTitle: 'Add Link',
   });
 
-  // Two candidate placements on the folder's own document toolbar - both
-  // take {documentId}, so both are cheap to try. Confirmed live which one
-  // (if either) actually renders via the mount diag ping in
-  // add_link_button.tsx, rather than assuming.
-  for (const location of [WidgetLocation.DocumentBelowToolbar, WidgetLocation.DocumentAboveToolbar]) {
-    try {
-      await plugin.app.registerWidget(ADD_LINK_BUTTON_WIDGET, location, {
-        dimensions: { height: 'auto', width: 'auto' },
-      });
-    } catch (e) {
-      await diag(plugin, `registerWidget ${location} failed`, { error: describeError(e) });
-    }
+  // Confirmed live: registering both DocumentAboveToolbar and
+  // DocumentBelowToolbar only ever mounted one widget instance (one
+  // widgetInstanceId in the diag log), and the button landed above the
+  // breadcrumb - i.e. DocumentAboveToolbar won and BelowToolbar never
+  // rendered. Isolating to BelowToolbar alone to see whether it renders on
+  // its own (closer to the "Create Notes" row) once it isn't competing with
+  // the other registration for the same slot.
+  try {
+    await plugin.app.registerWidget(ADD_LINK_BUTTON_WIDGET, WidgetLocation.DocumentBelowToolbar, {
+      dimensions: { height: 'auto', width: 'auto' },
+    });
+  } catch (e) {
+    await diag(plugin, 'registerWidget DocumentBelowToolbar failed', { error: describeError(e) });
   }
 
   await diag(plugin, 'onActivate complete');
