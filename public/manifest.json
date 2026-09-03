@@ -1,0 +1,22 @@
+{
+  "manifestVersion": 1,
+  "id": "folder-links",
+  "name": "Folder Links",
+  "author": "jeremyones21-bot",
+  "repoUrl": "https://github.com/jeremyones21-bot/remnote-folder-links",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "theme": [],
+  "enableOnMobile": false,
+  "description": "Add a web link or a local file/folder link directly as an item inside a folder, right from the folder's own page.",
+  "requestNative": false,
+  "requiredScopes": [
+    {
+      "type": "All",
+      "level": "ReadCreateModifyDelete"
+    }
+  ]
+}
